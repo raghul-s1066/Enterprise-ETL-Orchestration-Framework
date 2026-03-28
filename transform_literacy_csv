@@ -1,0 +1,63 @@
+import pandas as pd
+from pathlib import Path
+import logging
+logging.basicConfig(level=logging.INFO)
+
+
+# Project paths
+BASE_DIR = Path("/root/airflow_project")
+
+INPUT_CSV = BASE_DIR / "data/raw/literacy_rate_2026.csv"
+OUTPUT_CSV = BASE_DIR / "data/processed/literacy_cleaned.csv"
+
+
+def main():
+logging.info(f"Cleaned shape: {df.shape}")
+logging.info("Transformation completed successfully")
+
+
+    print("Starting Data Transformation...")
+
+    # Read dataset
+    df = pd.read_csv(INPUT_CSV)
+
+    print("Original Shape:", df.shape)
+    print(df.head())
+
+    # -----------------------------
+    # Data Cleaning Rules
+    # -----------------------------
+
+    # 1. Standardize column names
+    df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
+
+    # 2. Remove duplicate rows
+    df = df.drop_duplicates()
+
+    # 3. Remove missing values
+    df = df.dropna()
+
+    # 4. Clean country column spaces
+    if "country" in df.columns:
+        df["country"] = df["country"].str.strip()
+
+    # 5. Ensure literacy rate numeric
+    if "literacy_rate_(%)" in df.columns:
+        df["literacy_rate_(%)"] = pd.to_numeric(df["literacy_rate_(%)"], errors="coerce")
+
+    # 6. Validate literacy rate range
+    if "literacy_rate_(%)" in df.columns:
+        df = df[df["literacy_rate_(%)"] <= 100]
+
+    print("Cleaned Shape:", df.shape)
+
+    # Save cleaned dataset
+    OUTPUT_CSV.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(OUTPUT_CSV, index=False)
+
+    print("Cleaned file saved to:", OUTPUT_CSV)
+
+
+if __name__ == "__main__":
+    main()
+    

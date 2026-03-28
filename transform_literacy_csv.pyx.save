@@ -1,0 +1,49 @@
+import pandas as pd
+from pathlib import Path
+
+# Base directory
+BASE_DIR = Path("/root/airflow_project")
+
+# Input and output files
+INPUT_CSV = BASE_DIR / "data/raw/literacy_rate_2026.csv"
+OUTPUT_CSV = BASE_DIR / "data/processed/literacy_cleaned.csv"
+
+
+def main():
+    print("Starting Transformation...")
+
+import pandas as pd
+from pathlib import Path
+
+# Project paths
+BASE_DIR = Path("/root/airflow_project")
+
+INPUT_CSV = BASE_DIR / "data/raw/literacy_rate_2026.csv"
+import pandas as pd
+from pathlib import Path
+
+# Project paths
+BASE_DIR = Path("/root/airflow_project")
+
+INPUT_CSV = BASE_DIR / "data/raw/literacy_rate_2026.csv"
+OUTPUT_CSV = BASE_DIR / "data/processed/literacy_cleaned.csv"
+
+
+def main():
+    print("Starting Data Transformation...")
+
+    # Read dataset
+    df = pd.read_csv(INPUT_CSV)
+
+    print("Original Shape:", df.shape)
+    print(df.head())
+
+    # -----------------------------
+    # Data Cleaning Rules
+    # -----------------------------
+
+    # 1. Standardize column names
+    df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
+
+    # 2. Remove duplicate rows
+    df = df.drop_duplicates
