@@ -3,17 +3,7 @@
 > **Infosys Springboard Virtual Internship Project**
 
 A production-grade ETL (Extract, Transform, Load) pipeline built with Python and Apache Airflow, designed to clean, transform, and orchestrate large-scale datasets with real-time monitoring and dashboarding.
-
----
-
-## 👥 Team
-
-| Name | Role |
-|------|------|
-| Himaja | Team Member |
-| Jagan | Team Member |
-| Raghul | Team Member |
-
+|
 ---
 
 ## 🛠️ Tech Stack
