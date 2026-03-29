@@ -1,148 +1,230 @@
-🧮 Enterprise Data Cleaning and ETL — Orchestration Framework Using Python
-This repository contains the project files and documentation for the "Enterprise Data Cleaning and ETL" pipeline, built as part of the Infosys Virtual Internship (Springboard). The project demonstrates the design and orchestration of an enterprise-grade ETL pipeline using Apache Airflow, Python, Pandas, and Chart.js for dashboard visualization.
+# Enterprise Data Cleaning and ETL Orchestration Framework
 
-📘 Project Overview
-The goal of this project is to build a complete ETL (Extract, Transform, Load) framework that can:
+> **Infosys Springboard Virtual Internship Project**
 
-Automate data cleaning and transformation processes
-Orchestrate ETL pipelines using Apache Airflow
-Implement centralized logging and alerting
-Visualize pipeline metrics through a real-time dashboard
-The pipeline uses the Literacy Rate dataset (sourced from Kaggle) and covers extraction, transformation, loading, and monitoring stages.
+A production-grade ETL (Extract, Transform, Load) pipeline built with Python and Apache Airflow, designed to clean, transform, and orchestrate large-scale datasets with real-time monitoring and dashboarding.
 
-🛠️ Technology Stack
-Category	Tools / Technologies
-Language	Python 3.9
-Orchestration	Apache Airflow 2.x
-Data Processing	Pandas, PySpark
-Visualization / UI	HTML, CSS, JavaScript, Chart.js
-Testing	Pytest
-Environment	Ubuntu (WSL2), VS Code
-Data Source	CSV (Kaggle - Literacy Rate Dataset)
-🧩 Milestones
-Milestone 1: Environment Setup & Pipeline Design
-Configured Apache Airflow in Ubuntu (WSL2).
-Designed 3-stage ETL pipeline architecture: Extract → Transform → Load.
-Created Airflow DAGs to orchestrate the workflow.
-Verified Airflow UI at localhost:8080.
-Output:
-✅ Airflow DAG enterprise_etl_pipeline created and scheduled @daily.
+---
 
-Milestone 2: Data Cleaning & Transformation
-Implemented six rule-based cleaning transformations using Pandas:
-Standardize column names
-Remove duplicates
-Handle missing values
-Trim whitespace
-Convert data types
-Validate data (literacy rate 0–100)
-Generated cleaned dataset: data/processed/literacy_cleaned.csv.
-Output:
-✅ Pipeline executed successfully via DAG clean_transform_load.
-Average runtime: ~51 seconds.
+## 👥 Team
 
-Milestone 3: Orchestration & Monitoring
-Developed dedicated monitoring DAG with:
-pipeline_health_check
-generate_report
-send_alert_summary
-Integrated centralized logging (PipelineLogger) and Airflow email alerts.
-Output:
-✅ monitoring_dag executed successfully with all alerts verified.
+| Name | Role |
+|------|------|
+| Himaja | Team Member |
+| Jagan | Team Member |
+| Raghul | Team Member |
 
-Milestone 4: Dashboards & Deployment
-Built an interactive dashboard with four sections:
-Overview
-Pipeline Status
-Data Analysis
-Logs & Alerts
-Deployed on 127.0.0.1:5500/dashboard.html.
-Tested on 10,000 records production dataset.
-Output:
-✅ Dashboard deployed successfully — 90% overall success rate, 12 total DAG runs.
+---
 
-🧠 Key Features
-Automated ETL orchestration using Airflow
-Data cleaning pipeline with modular Python functions
-Centralized logging and automated alerting (email/SLA callbacks)
-Real-time visualization with Chart.js dashboard
-Tested on large-scale (10K+) records
-📂 Project Structure
+## 🛠️ Tech Stack
 
+| Category | Tools |
+|----------|-------|
+| Language | Python 3.9 |
+| Orchestration | Apache Airflow 2.x |
+| Data Processing | Pandas, PySpark |
+| Dashboard | Streamlit / HTML + Chart.js |
+| Testing | Pytest |
+| Environment | Ubuntu (WSL2), VS Code |
+| Data Source | CSV (Kaggle – Literacy Rate Dataset) |
 
-Enterprise-ETL/
+---
+
+## 📋 Project Overview
+
+This project implements an enterprise-grade ETL framework that:
+- Extracts raw data from CSV sources
+- Cleans and transforms the data using rule-based logic
+- Loads processed data into the final data layer
+- Monitors pipelines with automated alerts and scheduling
+- Visualizes pipeline health via an interactive dashboard
+
+The dataset used is the **Global Literacy Rate dataset** from Kaggle (10,000 records).
+
+### Data Model
+
+| Column | Data Type | Description |
+|--------|-----------|-------------|
+| S.No | Integer | Serial Number (Primary Key) |
+| Country | String (VARCHAR) | Name of the Country |
+| Literacy Rate | Float (DECIMAL) | Literacy Rate percentage (0–100) |
+| Year | Integer | Year of recorded literacy data |
+
+---
+
+## 🚀 Milestones
+
+### Milestone 1 — Environment Setup & Pipeline Design
+
+**Objective:** Configure Apache Airflow as the orchestration engine and define the overall ETL pipeline architecture.
+
+**What We Did:**
+- Installed and configured Apache Airflow on Ubuntu (WSL2)
+- Designed the ETL pipeline with three core stages: Extract → Transform → Load
+- Defined the high-level data model using the Literacy Rate dataset
+- Created and configured Airflow DAGs to orchestrate the pipeline
+- Set up extraction scripts to read data from CSV sources
+- Verified the Airflow web interface at `localhost:8080`
+
+**Output:** The `enterprise_etl_pipeline` DAG was created with three tasks — `extract_literacy_data`, `transform_literacy_data`, and `load_literacy_data` — scheduled `@daily` and verified in the Airflow UI.
+
+---
+
+### Milestone 2 — Data Cleaning & Transformation
+
+**Objective:** Implement data preparation workflows, including cleaning raw data and applying transformation rules.
+
+**What We Did:**
+- Developed a rule-based cleaning engine
+- Implemented data transformations using Pandas
+- Applied 6 cleaning rules (see below)
+- Saved the cleaned dataset to `data/processed/literacy_cleaned.csv`
+- Tested the cleaning pipeline using unit tests with Pytest
+
+**Cleaning Rules:**
+
+| Rule | Description |
+|------|-------------|
+| Rule 1 | Standardizing column names — converted to lowercase with underscores |
+| Rule 2 | Removing duplicate records |
+| Rule 3 | Handling missing values — removed rows with null/missing values |
+| Rule 4 | Removing extra whitespace from text fields |
+| Rule 5 | Data type conversion — literacy rate column to numeric format |
+| Rule 6 | Data validation — literacy rate values within range 0–100 |
+
+**Output:** The `clean_transform_load` DAG executed with 2 successful runs (mean duration: 51 seconds). Cleaned dataset saved to the processed data layer.
+
+---
+
+### Milestone 3 — Orchestration & Monitoring
+
+**Objective:** Add Airflow DAGs for orchestration and integrate monitoring tools into the ETL pipeline.
+
+**What We Did:**
+- Created `monitoring_dag` with three tasks: `pipeline_health_check`, `generate_report`, and `send_alert_summary`
+- Configured `@daily` DAG scheduling for automated execution
+- Integrated centralized logging using the `PipelineLogger` utility module
+- Implemented `on_success_callback` and `on_failure_callback` alert configurations
+- Verified monitoring DAG with 2 successful runs
+
+**Alert Configuration:**
+
+| Alert | Trigger |
+|-------|---------|
+| `on_success_callback` | Pipeline completes successfully |
+| `on_failure_callback` | Pipeline encounters an error |
+| SLA Miss Alert | Pipeline exceeds defined time limit |
+| SMTP | Configured in `airflow.cfg` for email notifications |
+
+**Output:** The `monitoring_dag` executed with 2 successful runs (mean duration: 1 min 18 sec). Alert system verified as operational.
+
+---
+
+### Milestone 4 — Dashboards & Deployment
+
+**Objective:** Build an interactive monitoring dashboard and finalize deployment of the complete ETL framework.
+
+**What We Did:**
+- Built an Enterprise ETL Pipeline Dashboard with four sections: Overview, Pipeline Status, Data Analysis, and Logs & Alerts
+- Deployed the dashboard at `127.0.0.1:5500/dashboard.html`
+- Tested the complete ETL pipeline on 10,000 production records
+- Verified all 4 milestones as complete on the dashboard
+
+**Output:**
+
+| Metric | Value |
+|--------|-------|
+| Milestones Completed | 4 / 4 |
+| Overall Success Rate | 90% |
+| Total DAGs | 3 |
+| Total Runs | 12 |
+| Records Extracted | 10,000 |
+| Records After Cleaning | ~9,500 |
+
+---
+
+## 📁 Project Structure
+
+```
 ├── dags/
 │   ├── enterprise_etl_pipeline.py
 │   ├── clean_transform_load.py
 │   └── monitoring_dag.py
 ├── data/
 │   ├── raw/
-│   │   └── literacy_rate.csv
 │   └── processed/
 │       └── literacy_cleaned.csv
 ├── scripts/
-│   ├── extract_data.py
-│   ├── transform_data.py
-│   ├── load_data.py
-│   ├── pipeline_logger.py
-│   └── tests/
-│       └── test_cleaning_rules.py
+│   └── pipeline_logger.py
+├── tests/
+│   └── test_cleaning_pipeline.py
 ├── dashboard/
-│   ├── dashboard.html
-│   ├── styles.css
-│   └── charts.js
-├── requirements.txt
-├── airflow.cfg
+│   └── dashboard.html
 └── README.md
-📦 Installation & Setup
-Clone this repository:
+```
 
-bash
+---
 
+## ⚙️ Setup & Installation
 
-git clone [github.com](https://github.com/)<your-username>/Enterprise-ETL.git
-cd Enterprise-ETL
-Install dependencies:
+### Prerequisites
+- Python 3.9+
+- Ubuntu / WSL2
+- Apache Airflow 2.x
 
-bash
+### Installation
 
+```bash
+# Clone the repository
+git clone https://github.com/your-username/etl-orchestration-framework.git
+cd etl-orchestration-framework
 
-pip install -r requirements.txt
-Initialize and start Apache Airflow:
+# Install dependencies
+pip install apache-airflow pandas pyspark streamlit pytest sqlalchemy
 
-bash
-
-
+# Initialize Airflow
 airflow db init
-airflow webserver -p 8080
-airflow scheduler
-Access Airflow at 
-localhost
+airflow users create --username admin --password admin \
+  --firstname Admin --lastname User --role Admin --email admin@example.com
 
-Deploy the dashboard:
+# Start Airflow
+airflow webserver --port 8080 &
+airflow scheduler &
+```
 
-bash
+### Running the Pipeline
 
+```bash
+# Trigger ETL pipeline manually
+airflow dags trigger enterprise_etl_pipeline
 
-cd dashboard
-live-server
-(Or open dashboard.html in any browser.)
+# Trigger cleaning & transformation
+airflow dags trigger clean_transform_load
 
-📊 Dashboard Preview
-Overview: ETL milestones & success rate
-Pipeline Status: DAG execution metrics
-Data Analysis: Records processed per stage
-Logs & Alerts: System logs and email alerts
-(Refer to screenshots in the /media folder.)
+# Trigger monitoring
+airflow dags trigger monitoring_dag
+```
 
-🧾 Authors
-Himaja
-Jagan
-Raghul
-🧑‍💻 Developed under Infosys Springboard Virtual Internship Program.
+---
 
-⚙️ License
-This project is developed for educational purposes as part of Infosys Virtual Internship.
-You may reuse or adapt this code for learning and personal projects with attribution.
+## 📊 Dashboard
 
-Would you like me to tailor this README for GitHub rendering with badges (Python, Airflow, etc.) and a project logo banner? It would make it look more professional and visually attractive.
+Open `dashboard/dashboard.html` with a live server (e.g., VS Code Live Server) at `127.0.0.1:5500/dashboard.html` to view:
+- Overall pipeline health
+- DAG run results and success rates
+- Records processed per stage
+- Live logs and alert configuration
+
+---
+
+## 🧪 Testing
+
+```bash
+pytest tests/
+```
+
+---
+
+## 📄 License
+
+This project was developed as part of the **Infosys Springboard Virtual Internship** program.
